@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const MessageSchema = new mongooose.Schema({
+const MessageSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: ["user", "assistant"],
@@ -31,7 +31,7 @@ const ThreadSchema = new mongoose.Schema({
     default: Date.now,
   },
   updatedAt: {
-    type: String,
+    type: Date,
     default: Date.now,
   },
 });
