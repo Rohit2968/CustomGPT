@@ -1,0 +1,3 @@
+# Created my own Gpt: CustomGPT
+# OpenRouter Api
+# Tech Stack Used: React for Frontend, Node.js and Express js for Backend, MongoDB for Database
