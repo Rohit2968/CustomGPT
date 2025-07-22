@@ -1,12 +1,13 @@
 import "dotenv/config";
+import OpenAI from "openai";
 
-const getOpenAIResponse = async(message) => {
-    const { message } = req.body;
+// ✅ Initialize openai instance
+const openai = new OpenAI({
+  apiKey: process.env.OPENROUTER_API_KEY, // from your .env file
+  baseURL: "https://openrouter.ai/api/v1",
+});
 
-  if (!message) {
-    return res.status(400).json({ error: 'Message is required' });
-  }
-
+const getOpenAIResponse = async (message) => {
   try {
     const completion = await openai.chat.completions.create({
       model: 'openai/gpt-4o',
@@ -19,25 +20,21 @@ const getOpenAIResponse = async(message) => {
       max_tokens: 1000
     });
 
-    // const aiResponse = completion.choices[0].message.content; // Reply from AI
+    const aiResponse = completion.choices[0].message.content;
 
-    // ✅ Print AI output in terminal
-    // console.log('\n🔹 AI Response:\n', aiResponse);
-
-    res.json({ response: aiResponse });
+    // ✅ return the message to caller
+    return aiResponse;
 
   } catch (error) {
     console.error('OpenRouter error:', error);
 
-    // Optional: Handle 402 specifically
+    // Optional: Handle 402 errors from OpenRouter
     if (error.status === 402) {
-      return res.status(402).json({
-        error: 'Insufficient credits or too many tokens. Reduce `max_tokens` or upgrade at https://openrouter.ai/settings/credits',
-      });
+      throw new Error("Insufficient credits or too many tokens.");
     }
 
-    res.status(500).json({ error: 'Something went wrong' });
+    throw new Error("AI Request Failed");
   }
-}
+};
 
 export default getOpenAIResponse;

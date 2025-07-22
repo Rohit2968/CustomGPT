@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import OpenAI from 'openai';
 import mongoose from 'mongoose';
+import chatRoutes from "./routes/chat.js"
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ const openai = new OpenAI({
     'X-Title': process.env.YOUR_SITE_NAME,
   },
 });
+
+app.use("/api", chatRoutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
