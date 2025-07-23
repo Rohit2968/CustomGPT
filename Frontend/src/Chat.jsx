@@ -4,6 +4,28 @@ import { MyContext } from "./MyContext";
 import ReactMarkdown from "react-markdown";
 import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
+import { sendChatMessage } from "./utils/api";
+
+sendChatMessage("Hello GPT").then((res) => {
+  console.log(res);
+});
+
+// Chat.js or App.js or wherever you send the request
+const baseUrl = process.env.REACT_APP_API_URL;
+
+const sendMessage = async (message) => {
+  const res = await fetch(`${baseUrl}/api/chat`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message })
+  });
+  const data = await res.json();
+  console.log(data);
+};
+
+
 
 function Chat() {
     const {newChat, prevChats, reply} = useContext(MyContext);
