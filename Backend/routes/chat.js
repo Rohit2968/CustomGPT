@@ -1,5 +1,4 @@
 import express from "express";
-import OpenAI from "openai";
 import Thread from "../models/Thread.js";
 import getOpenAIResponse from "../utils/openai.js";
 
@@ -48,7 +47,7 @@ router.get("/thread/:threadId", async (req, res) => {
 });
 
 // Delete a Thread
-router.delete("/thread/threadId", async (req, res) => {
+router.delete("/thread/:threadId", async (req, res) => {
   const { threadId } = req.params;
   try {
     const deletedThread = await Thread.findOneAndDelete({ threadId });
