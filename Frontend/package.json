@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "start": "node index.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "highlight.js": "^11.11.1",
