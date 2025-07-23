@@ -6,12 +6,13 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import { sendChatMessage } from "./utils/api";
 
+
 sendChatMessage("Hello GPT").then((res) => {
   console.log(res);
 });
 
-// Chat.js or App.js or wherever you send the request
-const baseUrl = process.env.REACT_APP_API_URL;
+const baseUrl = import.meta.env.VITE_API_URL;
+
 
 const sendMessage = async (message) => {
   const res = await fetch(`${baseUrl}/api/chat`, {
