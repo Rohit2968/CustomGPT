@@ -24,57 +24,44 @@ const openai = new OpenAI({
 
 app.use("/api", chatRoutes);
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on https://customgpt-backend-oytb.onrender.com${PORT}`);
-  connectDB();
-});
-
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI)
-    console.log("Connected Successfully with Database!");
-  } catch (error) {
-    console.log("Failed to connect", error);
-  }
-}
-
+// Optional: remove if unused
 app.post('/api/ask', async (req, res) => {
   const { message } = req.body;
 
-  if (!message) {
-    return res.status(400).json({ error: 'Message is required' });
-  }
+  if (!message) return res.status(400).json({ error: 'Message is required' });
 
   try {
     const completion = await openai.chat.completions.create({
       model: 'openai/gpt-4o',
-      messages: [
-        {
-          role: 'user',
-          content: message,
-        },
-      ],
+      messages: [{ role: 'user', content: message }],
       max_tokens: 1000
     });
 
-    // const aiResponse = completion.choices[0].message.content; // Reply from AI
-
-    // ✅ Print AI output in terminal
-    // console.log('\n🔹 AI Response:\n', aiResponse);
-
+    const aiResponse = completion.choices[0].message.content; // ✅ fixed
     res.json({ response: aiResponse });
 
   } catch (error) {
     console.error('OpenRouter error:', error);
-
-    // Optional: Handle 402 specifically
     if (error.status === 402) {
       return res.status(402).json({
         error: 'Insufficient credits or too many tokens. Reduce `max_tokens` or upgrade at https://openrouter.ai/settings/credits',
       });
     }
-
     res.status(500).json({ error: 'Something went wrong' });
   }
 });
 
+// ✅ Connect DB and Start Server
+const startServer = async () => {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI);
+    console.log("✅ Connected to MongoDB");
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error("❌ MongoDB connection failed", err);
+  }
+};
+
+startServer();
