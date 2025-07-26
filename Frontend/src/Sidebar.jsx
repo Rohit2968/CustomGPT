@@ -17,7 +17,7 @@ function Sidebar() {
 
   const getAllThreads = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/thread");
+      const response = await fetch("https://customgpt-backend-oytb.onrender.com/api/thread");
       const res = await response.json();
       const filteredData = res.map((thread) => ({
         threadId: thread.threadId,
