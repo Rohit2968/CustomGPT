@@ -25,7 +25,7 @@ const openai = new OpenAI({
 app.use("/api", chatRoutes);
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
+  console.log(`🚀 Server running on https://customgpt-backend-oytb.onrender.com${PORT}`);
   connectDB();
 });
 
